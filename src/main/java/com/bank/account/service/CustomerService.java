@@ -11,11 +11,11 @@ import java.util.Optional;
 public interface CustomerService {
     List<CustomerRespDto> getAll();
 
-    Optional<CustomerRespDto> getById(String id);
+    Optional<CustomerRespDto> getById(Long id);
 
     Optional<CustomerRespDto> create(CustomerReqDto customerReqDto);
 
-    Optional<CustomerRespDto> update(String id, CustomerReqDto customerReqDto);
+    Optional<CustomerRespDto> update(Long id, CustomerReqDto customerReqDto);
 
-    Optional<CustomerRespDto> delete(String id);
+    Optional<CustomerRespDto> delete(Long id);
 }

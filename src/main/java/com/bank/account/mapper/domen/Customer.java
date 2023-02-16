@@ -1,20 +1,29 @@
 package com.bank.account.mapper.domen;
 
-import jakarta.persistence.Entity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
+@Table(name = "customer")
+@Entity
 @Getter
 @Setter
 @Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
-    String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    @Column(name = "first_name")
     String firstName;
+    @Column(name = "last_name")
     String lastName;
-    LocalDateTime dateOfBirth;
+    @Column(name = "dob")
+    LocalDate dateOfBirth;
+    @Column(name = "active")
     boolean active;
 }

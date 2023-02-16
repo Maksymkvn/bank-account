@@ -5,7 +5,9 @@ import com.bank.account.mapper.domen.dto.CustomerReqDto;
 import com.bank.account.mapper.domen.dto.CustomerRespDto;
 import com.bank.account.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +16,9 @@ import java.util.stream.StreamSupport;
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
-
+    @Autowired
     private final CustomerRepository customerRepository;
+    @Autowired
     private final CustomerMapper customerMapper;
 
     @Override
@@ -27,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerRespDto> getById(String id) {
+    public Optional<CustomerRespDto> getById(Long id) {
         return customerRepository.findById(id)
                 .map(customerMapper::customerToRespDto);
     }
@@ -40,7 +43,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerRespDto> update(String id, CustomerReqDto customerReqDto) {
+    @Transactional
+    public Optional<CustomerRespDto> update(Long id, CustomerReqDto customerReqDto) {
         return customerRepository.findById(id)
                 .map(c -> {
                     if (customerReqDto != null) {
@@ -56,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerRespDto> delete(String id) {
+    public Optional<CustomerRespDto> delete(Long id) {
         Optional<CustomerRespDto> customerRespDto = customerRepository.findById(id)
                 .map(customerMapper::customerToRespDto);
         if (customerRepository.existsById(id)) {

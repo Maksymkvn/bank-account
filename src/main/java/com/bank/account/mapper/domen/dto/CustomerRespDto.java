@@ -4,14 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
 public class CustomerRespDto {
-    String id;
+    Long id;
     String firstName;
     String lastName;
-    LocalDateTime dateOfBirth;
+    LocalDate dateOfBirth;
     boolean active;
 }
