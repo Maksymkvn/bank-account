@@ -17,13 +17,16 @@ import java.time.LocalDateTime;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "id")
+    private Long id;
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
     @Column(name = "last_name")
-    String lastName;
+    private String lastName;
     @Column(name = "dob")
-    LocalDate dateOfBirth;
+    private LocalDate dateOfBirth;
     @Column(name = "active")
-    boolean active;
+    private boolean active;
+    @OneToOne(mappedBy = "customer")
+    private Account account;
 }
