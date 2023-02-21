@@ -1,6 +1,9 @@
 package com.bank.account.service;
 
+import com.bank.account.mapper.AccountMapper;
 import com.bank.account.mapper.CustomerMapper;
+import com.bank.account.mapper.domen.dto.AccountReqDto;
+import com.bank.account.mapper.domen.dto.AccountRespDto;
 import com.bank.account.mapper.domen.dto.CustomerReqDto;
 import com.bank.account.mapper.domen.dto.CustomerRespDto;
 import com.bank.account.repository.CustomerRepository;
@@ -20,6 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     @Autowired
     private final CustomerMapper customerMapper;
+    private final AccountMapper accountMapper;
 
     @Override
     public List<CustomerRespDto> getAll() {
@@ -67,5 +71,14 @@ public class CustomerServiceImpl implements CustomerService {
             customerRepository.deleteById(id);
         }
         return customerRespDto;
+    }
+
+    public Optional<CustomerRespDto> connectAccount(Long id, AccountReqDto accountReqDto) {
+        return customerRepository.findById(id)
+                .map(c -> {
+                    c.setAccount(accountMapper.accountReqDtoToAccount(accountReqDto).get());
+                    return c;
+                })
+                .map(customerMapper::customerToRespDto);
     }
 }

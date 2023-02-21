@@ -1,5 +1,6 @@
 package com.bank.account.mapper.domen.dto;
 
+import com.bank.account.mapper.domen.Account;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +10,11 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class CustomerRespDto {
-    Long id;
-    String firstName;
-    String lastName;
-    LocalDate dateOfBirth;
-    boolean active;
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
+    private boolean active;
+    private Account account;
+
 }

@@ -22,6 +22,7 @@ public class CustomerMapper {
                         .lastName(c.getLastName())
                         .dateOfBirth(c.getDateOfBirth())
                         .active(c.isActive())
+                        .account(c.getAccount())
                         .build())
                 .orElse(null);
     }
@@ -37,4 +38,5 @@ public class CustomerMapper {
                         .active(c.isActive())
                         .build());
     }
+
 }
