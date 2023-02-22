@@ -19,6 +19,8 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "account_id")
+    private Long accountId;
     @Column(name = "amount")
     private Double amount;
     @Column(name = "operation_type")
@@ -31,6 +33,5 @@ public class Transaction {
     private LocalDateTime transactionTime;
     @ManyToOne
     @JoinColumn(name = "account_id", insertable = false, updatable = false)
- //   @JoinColumn(name = "account_id")
     private Account account;
 }

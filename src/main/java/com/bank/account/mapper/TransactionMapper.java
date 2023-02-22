@@ -40,7 +40,7 @@ public class TransactionMapper {
                         .id(t.getId())
                         .amount(t.getAmount())
                         .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
-                        .account(t.getAccount())
+                        .accountId(t.getAccountId())
                         .build());
     }
 

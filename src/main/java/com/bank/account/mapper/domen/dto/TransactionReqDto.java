@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TransactionReqDto {
     private Long id;
+    private Long accountId;
     private Double amount;
     private String operationType;
     private String sourceAccount;

@@ -35,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<AccountRespDto> create(AccountReqDto accountReqDto) {
         Optional<CustomerRespDto> customerRespDtoById = customerService.getById(accountReqDto.getCustomerId());
         if (customerRespDtoById.get().getAccount() == null & accountReqDto.getInitialCredit() == 0) {
@@ -64,9 +64,9 @@ public class AccountServiceImpl implements AccountService {
                     .map(accountMapper::accountToAccountRespDto);
 
  //               createTransaction(accountRespDto.get(), accountReqDto.getInitialCredit());
-            Account account = accountMapper.accountRespDtoToAccount(accountRespDto.get());
+//            Account account = accountMapper.accountRespDtoToAccount(accountRespDto.get());
             TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
-                    .account(account)
+                    .accountId(accountRespDto.get().getAccountId())
                     .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
                     .amount(accountReqDto.getInitialCredit())
                     .build();
@@ -77,7 +77,7 @@ public class AccountServiceImpl implements AccountService {
             Optional<AccountRespDto> updateAccountRespDto = updateBalance(customerRespDtoById.get().getAccount().getId(), accountReqDto);
 
             TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
-                    .account(customerRespDtoById.get().getAccount())
+                    .accountId(updateAccountRespDto.get().getAccountId())
                     .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
                     .amount(accountReqDto.getInitialCredit())
                     .build();
@@ -88,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<AccountRespDto> updateBalance(Long id, AccountReqDto accountReqDto) {
         Double accountBalance = customerService.getById(accountReqDto.getCustomerId()).get().getAccount().getBalance();
         return accountRepository.findById(id)
@@ -98,7 +98,7 @@ public class AccountServiceImpl implements AccountService {
                 })
                 .map(accountMapper::accountToAccountRespDto);
     }
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<TransactionRespDto> createTransaction(AccountRespDto accountRespDto, Double amount){
                     TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
                     .account(accountMapper.accountRespDtoToAccount(accountRespDto))

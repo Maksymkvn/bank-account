@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TransactionRespDto {
     private Long id;
+    private Long accountId;
     private Double amount;
     private String operationType;
     private String sourceAccount;
