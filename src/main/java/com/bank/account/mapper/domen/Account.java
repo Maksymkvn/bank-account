@@ -1,5 +1,6 @@
 package com.bank.account.mapper.domen;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,9 +20,14 @@ public class Account {
     private Long id;
     @Column(name = "balance")
     private Double balance;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    //    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
-    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    //    @JsonIgnore
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 }

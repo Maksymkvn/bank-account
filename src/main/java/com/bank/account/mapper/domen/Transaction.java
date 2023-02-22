@@ -1,5 +1,7 @@
 package com.bank.account.mapper.domen;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +29,9 @@ public class Transaction {
     private String transactionStatus;
     @Column(name = "transaction_time")
     private LocalDateTime transactionTime;
+    //    @ManyToOne
+//    @JoinColumn(name = "account_id", insertable = false, updatable = false)
     @ManyToOne
-    @JoinColumn(name="account_id", insertable = false, updatable = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 }

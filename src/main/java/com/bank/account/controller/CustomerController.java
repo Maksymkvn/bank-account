@@ -2,6 +2,7 @@ package com.bank.account.controller;
 
 import com.bank.account.mapper.domen.dto.CustomerReqDto;
 import com.bank.account.mapper.domen.dto.CustomerRespDto;
+import com.bank.account.mapper.domen.dto.CustomerRespDtoForBank;
 import com.bank.account.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -62,5 +63,12 @@ public class CustomerController {
         }
         return new ResponseEntity<>("Customer not found ", HttpStatus.NOT_FOUND);
     }
-
+    @GetMapping("management/customer/bank")
+    public ResponseEntity<? super List<CustomerRespDtoForBank>> findAllCustomerForBank() {
+        List<CustomerRespDtoForBank> respDtoList = customerService.getAllBank();
+        if (respDtoList.isEmpty()) {
+            return new ResponseEntity<>("not found ", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.status(200).body(respDtoList);
+    }
 }

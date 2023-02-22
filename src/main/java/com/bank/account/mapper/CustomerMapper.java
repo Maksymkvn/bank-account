@@ -3,6 +3,7 @@ package com.bank.account.mapper;
 import com.bank.account.mapper.domen.Customer;
 import com.bank.account.mapper.domen.dto.CustomerReqDto;
 import com.bank.account.mapper.domen.dto.CustomerRespDto;
+import com.bank.account.mapper.domen.dto.CustomerRespDtoForBank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -39,4 +40,21 @@ public class CustomerMapper {
                         .build());
     }
 
+    public CustomerRespDtoForBank customerToRespDtoForBank(Customer customer) {
+        return Optional.ofNullable(customer)
+                .stream()
+                .findAny()
+                .map(c -> CustomerRespDtoForBank.builder()
+                        .id(c.getId())
+                        .firstName(c.getFirstName())
+                        .lastName(c.getLastName())
+                        .dateOfBirth(c.getDateOfBirth())
+                        .active(c.isActive())
+                        .account(c.getAccount())
+                        .transactions(c.getAccount().getTransactions())
+                        .build())
+                .orElse(null);
+
+
+    }
 }

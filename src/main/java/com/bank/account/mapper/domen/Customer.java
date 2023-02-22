@@ -1,5 +1,6 @@
 package com.bank.account.mapper.domen;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@ToString
+//@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
@@ -27,6 +28,7 @@ public class Customer {
     private LocalDate dateOfBirth;
     @Column(name = "active")
     private boolean active;
+    @JsonIgnore
     @OneToOne(mappedBy = "customer")
     private Account account;
 }

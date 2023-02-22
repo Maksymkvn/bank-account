@@ -2,10 +2,7 @@ package com.bank.account.service;
 
 import com.bank.account.mapper.AccountMapper;
 import com.bank.account.mapper.CustomerMapper;
-import com.bank.account.mapper.domen.dto.AccountReqDto;
-import com.bank.account.mapper.domen.dto.AccountRespDto;
-import com.bank.account.mapper.domen.dto.CustomerReqDto;
-import com.bank.account.mapper.domen.dto.CustomerRespDto;
+import com.bank.account.mapper.domen.dto.*;
 import com.bank.account.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,4 +78,13 @@ public class CustomerServiceImpl implements CustomerService {
                 })
                 .map(customerMapper::customerToRespDto);
     }
+
+    @Override
+    public List<CustomerRespDtoForBank> getAllBank() {
+        return StreamSupport.stream(customerRepository.findAll().spliterator(), false)
+                .toList().stream()
+                .map(customerMapper::customerToRespDtoForBank)
+                .toList();
+    }
+
 }

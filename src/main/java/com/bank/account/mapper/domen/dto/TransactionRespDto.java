@@ -6,10 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
-public class TransactionalReqDto {
+public class TransactionRespDto {
     private Long id;
     private Double amount;
     private String operationType;

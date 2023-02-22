@@ -2,6 +2,7 @@ package com.bank.account.service;
 
 import com.bank.account.mapper.domen.dto.CustomerReqDto;
 import com.bank.account.mapper.domen.dto.CustomerRespDto;
+import com.bank.account.mapper.domen.dto.CustomerRespDtoForBank;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface CustomerService {
     Optional<CustomerRespDto> update(Long id, CustomerReqDto customerReqDto);
 
     Optional<CustomerRespDto> delete(Long id);
+    List<CustomerRespDtoForBank> getAllBank();
 }

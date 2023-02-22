@@ -3,6 +3,7 @@ package com.bank.account.mapper;
 import com.bank.account.mapper.domen.Account;
 import com.bank.account.mapper.domen.dto.AccountReqDto;
 import com.bank.account.mapper.domen.dto.AccountRespDto;
+import com.bank.account.mapper.domen.dto.AccountRespDtoForBank;
 import com.bank.account.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,9 +30,10 @@ public class AccountMapper {
                 findAny()
                 .map(a->Account.builder()
                         .customer(customerRepository.findById(a.getCustomerId()).get())
+                        .balance(0.0)
                         .build());
     }
-    public Optional<Account> accountRespDtoToAccount(AccountRespDto accountRespDto){
+    public Account accountRespDtoToAccount(AccountRespDto accountRespDto){
         return Optional.ofNullable(accountRespDto)
                 .stream().
                 findAny()
@@ -40,6 +42,8 @@ public class AccountMapper {
                         .balance(a.getBalance())
                         .customer(a.getCustomer())
                         .transactions(a.getTransactions())
-                        .build());
+                        .build())
+                .orElse(null);
     }
+
 }

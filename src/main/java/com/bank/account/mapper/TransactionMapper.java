@@ -1,10 +1,8 @@
 package com.bank.account.mapper;
 
-import com.bank.account.mapper.domen.Customer;
 import com.bank.account.mapper.domen.Transaction;
-import com.bank.account.mapper.domen.dto.CustomerRespDto;
-import com.bank.account.mapper.domen.dto.TransactionalReqDto;
-import com.bank.account.mapper.domen.dto.TransactionalRespDto;
+import com.bank.account.mapper.domen.dto.TransactionReqDto;
+import com.bank.account.mapper.domen.dto.TransactionRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,24 +12,25 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class TransactionalMapper {
+public class TransactionMapper {
 
-    public TransactionalRespDto transactionalToTransactionalRespDto(Transaction transaction) {
+    public TransactionRespDto transactionalToTransactionalRespDto(Transaction transaction) {
         return Optional.ofNullable(transaction)
                 .stream()
                 .findAny()
-                .map(t -> TransactionalRespDto.builder()
+                .map(t -> TransactionRespDto.builder()
                         .id(t.getId())
                         .amount(t.getAmount())
                         .operationType(t.getOperationType())
                         .transactionStatus(t.getTransactionStatus())
                         .transactionTime(t.getTransactionTime())
                         .sourceAccount(t.getSourceAccount())
+                        .account(t.getAccount())
                         .build())
                 .orElse(null);
     }
 
-    public Optional<Transaction> transactionReqDtoToTransaction(TransactionalReqDto transactionalReqDto){
+    public Optional<Transaction> transactionReqDtoToTransaction(TransactionReqDto transactionalReqDto){
         return Optional.ofNullable(transactionalReqDto)
                 .stream()
                 .findAny()
@@ -42,5 +41,4 @@ public class TransactionalMapper {
                         .account(t.getAccount())
                         .build());
     }
-
 }
