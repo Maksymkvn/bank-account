@@ -2,7 +2,6 @@ package com.bank.account.service;
 
 import com.bank.account.mapper.AccountMapper;
 import com.bank.account.mapper.TransactionMapper;
-import com.bank.account.mapper.domen.Account;
 import com.bank.account.mapper.domen.Transaction;
 import com.bank.account.mapper.domen.dto.*;
 import com.bank.account.repository.AccountRepository;
@@ -35,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public Optional<AccountRespDto> create(AccountReqDto accountReqDto) {
         Optional<CustomerRespDto> customerRespDtoById = customerService.getById(accountReqDto.getCustomerId());
         if (customerRespDtoById.get().getAccount() == null & accountReqDto.getInitialCredit() == 0) {
@@ -82,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
                 .map(accountMapper::accountToAccountRespDto);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public Optional<TransactionRespDto> createTransaction(AccountRespDto accountRespDto, Double amount) {
         TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
                 .account(accountMapper.accountRespDtoToAccount(accountRespDto))
@@ -91,6 +90,7 @@ public class AccountServiceImpl implements AccountService {
                 .build();
         return transactionService.create(newTransactionReqDto);
     }
+
 
     public List<Transaction> addToList(Transaction transaction) {
         List<Transaction> transactionList = new ArrayList<>();
