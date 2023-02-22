@@ -7,6 +7,7 @@ import com.bank.account.mapper.domen.dto.TransactionRespDto;
 import com.bank.account.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,18 +19,20 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
 
-    public Optional<TransactionRespDto> getById(Long id){
+    public Optional<TransactionRespDto> getById(Long id) {
         return transactionRepository.findById(id)
                 .map(transactionMapper::transactionalToTransactionalRespDto);
     }
-    public List<TransactionRespDto> getAll(){
+
+    public List<TransactionRespDto> getAll() {
         return StreamSupport.stream(transactionRepository.findAll().spliterator(), false)
                 .toList().stream()
                 .map(transactionMapper::transactionalToTransactionalRespDto)
                 .toList();
     }
 
-    public Optional<TransactionRespDto> create(TransactionReqDto transactionalReqDto){
+    @Transactional
+    public Optional<TransactionRespDto> create(TransactionReqDto transactionalReqDto) {
         return transactionMapper.transactionReqDtoToTransaction(transactionalReqDto)
                 .map(transactionRepository::save)
                 .map(transactionMapper::transactionalToTransactionalRespDto);

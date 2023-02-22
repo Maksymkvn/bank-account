@@ -18,6 +18,6 @@ public class CustomerRespDtoForBank {
     private String lastName;
     private LocalDate dateOfBirth;
     private boolean active;
-    private Account account;
-    private List<Transaction> transactions;
+    private Long accountId;
+    private List<TransactionRespDtoCustomer> transactions;
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class CustomerMapper {
+    private final TransactionMapper transactionMapper;
 
     public CustomerRespDto customerToRespDto(Customer customer) {
         return Optional.ofNullable(customer)
@@ -50,8 +51,8 @@ public class CustomerMapper {
                         .lastName(c.getLastName())
                         .dateOfBirth(c.getDateOfBirth())
                         .active(c.isActive())
-                        .account(c.getAccount())
-                        .transactions(c.getAccount().getTransactions())
+                        .accountId(customer.getAccount().getId())
+                        .transactions(transactionMapper.transactionalToTransactionalRespDtoForCustomer(c.getAccount().getTransactions()))
                         .build())
                 .orElse(null);
 

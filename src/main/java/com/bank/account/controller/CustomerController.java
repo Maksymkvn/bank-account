@@ -71,4 +71,14 @@ public class CustomerController {
         }
         return ResponseEntity.status(200).body(respDtoList);
     }
+
+    @GetMapping("management/customer/bank/{id}")
+    public ResponseEntity<? super CustomerRespDtoForBank> findCustomerByIdForBank(@PathVariable("id") Long id) {
+        Optional<CustomerRespDtoForBank> customerById = customerService.getByIdBank(id);
+        if (customerById.isPresent()) {
+            return ResponseEntity.status(200).body(customerById);
+        }
+        return new ResponseEntity<>("not found ", HttpStatus.NOT_FOUND);
+    }
+
 }

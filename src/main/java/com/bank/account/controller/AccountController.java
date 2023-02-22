@@ -2,12 +2,12 @@ package com.bank.account.controller;
 
 import com.bank.account.mapper.domen.dto.AccountReqDto;
 import com.bank.account.mapper.domen.dto.AccountRespDto;
+import com.bank.account.mapper.domen.dto.CustomerRespDto;
 import com.bank.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -24,5 +24,14 @@ public class AccountController {
             return ResponseEntity.status(201).body(accountRespDto);
 //        }
 //        return new ResponseEntity<>("Invalid request", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("management/account/{id}")
+    public ResponseEntity<? super AccountRespDto> findCustomerById(@PathVariable("id") Long id) {
+        Optional<AccountRespDto> accountById = accountService.getById(id);
+        if (accountById.isPresent()) {
+            return ResponseEntity.status(200).body(accountById);
+        }
+        return new ResponseEntity<>("not found ", HttpStatus.NOT_FOUND);
     }
 }

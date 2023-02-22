@@ -42,38 +42,37 @@ public class AccountServiceImpl implements AccountService {
             return accountMapper.accountReqDtoToAccount(accountReqDto)
                     .map(accountRepository::save)
                     .map(accountMapper::accountToAccountRespDto);
-            //TODO   Check add account to customer repo customerService.update(customerRespDtoById, accountMapper.accountRespDtoToAccount(accountRespDto.get());
         } else if (customerRespDtoById.get().getAccount() == null & accountReqDto.getInitialCredit() != 0) {
 
-            TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
-                    .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
-                    .amount(accountReqDto.getInitialCredit())
-                    .build();
-            transactionService.create(newTransactionReqDto);
-            Transaction transaction = transactionMapper.transactionReqDtoToTransaction(newTransactionReqDto).get();
-            List<Transaction> addToTransaction = new ArrayList<>();
-            addToTransaction.add(transaction);
+//            TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
+//                    .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
+//                    .amount(accountReqDto.getInitialCredit())
+//                    .build();
+//            transactionService.create(newTransactionReqDto);
+//
+//            Transaction transaction = transactionMapper.transactionReqDtoToTransaction(newTransactionReqDto).get();
+//            List<Transaction> addToTransaction = new ArrayList<>();
+//            addToTransaction.add(transaction);
 
             Optional<AccountRespDto> accountRespDto = accountMapper.accountReqDtoToAccount(accountReqDto)
                     .map(a -> {
                         a.setBalance(accountReqDto.getInitialCredit());
-                        a.setTransactions(addToTransaction);
+ //                       a.setTransactions(addToTransaction);
                         return a;
                     })
                     .map(accountRepository::save)
                     .map(accountMapper::accountToAccountRespDto);
 
-//                createTransaction(accountRespDto.get(), accountReqDto.getInitialCredit());
-
-//            Account account = accountMapper.accountRespDtoToAccount(accountRespDto.get());
-//            TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
-//                    .account(account)
-//                    .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
-//                    .amount(accountReqDto.getInitialCredit())
-//                    .build();
-//            transactionService.create(newTransactionReqDto);
-            //TODO   Check add transaction to account repo
+ //               createTransaction(accountRespDto.get(), accountReqDto.getInitialCredit());
+            Account account = accountMapper.accountRespDtoToAccount(accountRespDto.get());
+            TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
+                    .account(account)
+                    .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
+                    .amount(accountReqDto.getInitialCredit())
+                    .build();
+            transactionService.create(newTransactionReqDto);
             return accountRespDto;
+
         } else if (customerRespDtoById.get().getAccount() != null & accountReqDto.getInitialCredit() != 0) {
             Optional<AccountRespDto> updateAccountRespDto = updateBalance(customerRespDtoById.get().getAccount().getId(), accountReqDto);
 
@@ -83,14 +82,13 @@ public class AccountServiceImpl implements AccountService {
                     .amount(accountReqDto.getInitialCredit())
                     .build();
             transactionService.create(newTransactionReqDto);
- //           updateAccountRespDto.get().getTransactions().add(transactionMapper.transactionReqDtoToTransaction(newTransactionReqDto).get());
-            //TODO   Check add transaction to account repo
             return updateAccountRespDto;
         }
         return null;
     }
 
     @Override
+    @Transactional
     public Optional<AccountRespDto> updateBalance(Long id, AccountReqDto accountReqDto) {
         Double accountBalance = customerService.getById(accountReqDto.getCustomerId()).get().getAccount().getBalance();
         return accountRepository.findById(id)

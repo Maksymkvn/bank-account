@@ -21,6 +21,9 @@ public class AccountMapper {
                 .findAny()
                 .map(a -> AccountRespDto.builder()
                         .accountId(a.getId())
+                        .balance(a.getBalance())
+                        .customer(a.getCustomer())
+                        .transactions(a.getTransactions())
                         .build())
                 .orElse(null);
     }

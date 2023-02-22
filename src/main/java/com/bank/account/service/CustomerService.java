@@ -20,4 +20,5 @@ public interface CustomerService {
 
     Optional<CustomerRespDto> delete(Long id);
     List<CustomerRespDtoForBank> getAllBank();
+    Optional<CustomerRespDtoForBank> getByIdBank(Long id);
 }

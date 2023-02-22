@@ -87,4 +87,10 @@ public class CustomerServiceImpl implements CustomerService {
                 .toList();
     }
 
+    @Override
+    public Optional<CustomerRespDtoForBank> getByIdBank(Long id) {
+        return customerRepository.findById(id)
+                .map(customerMapper::customerToRespDtoForBank);
+    }
+
 }

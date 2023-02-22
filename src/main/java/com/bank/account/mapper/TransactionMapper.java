@@ -3,11 +3,13 @@ package com.bank.account.mapper;
 import com.bank.account.mapper.domen.Transaction;
 import com.bank.account.mapper.domen.dto.TransactionReqDto;
 import com.bank.account.mapper.domen.dto.TransactionRespDto;
+import com.bank.account.mapper.domen.dto.TransactionRespDtoCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -30,7 +32,7 @@ public class TransactionMapper {
                 .orElse(null);
     }
 
-    public Optional<Transaction> transactionReqDtoToTransaction(TransactionReqDto transactionalReqDto){
+    public Optional<Transaction> transactionReqDtoToTransaction(TransactionReqDto transactionalReqDto) {
         return Optional.ofNullable(transactionalReqDto)
                 .stream()
                 .findAny()
@@ -40,5 +42,17 @@ public class TransactionMapper {
                         .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
                         .account(t.getAccount())
                         .build());
+    }
+
+    public List<TransactionRespDtoCustomer> transactionalToTransactionalRespDtoForCustomer(List<Transaction> transactions) {
+        return transactions.stream().map(t -> TransactionRespDtoCustomer.builder()
+                        .id(t.getId())
+                        .amount(t.getAmount())
+                        .operationType(t.getOperationType())
+                        .transactionTime(t.getTransactionTime())
+                        .transactionStatus(t.getTransactionStatus())
+                        .sourceAccount(t.getSourceAccount())
+                        .build())
+                .toList();
     }
 }

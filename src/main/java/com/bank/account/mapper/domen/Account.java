@@ -16,18 +16,15 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+ //   @Column(name = "id")
     private Long id;
     @Column(name = "balance")
     private Double balance;
-    //    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
+//    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
-    //    @JsonIgnore
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JsonIgnore
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Transaction> transactions;
 }
