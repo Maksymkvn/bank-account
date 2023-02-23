@@ -1,14 +1,15 @@
 package com.bank.account.mapper.domen.dto;
 
-import com.bank.account.mapper.domen.Customer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Builder
-public class AccountRespDtoForBank {
+public class AccountRespToBank {
     private Long accountId;
-    private Double amount;
+    private BigDecimal amount;
 }

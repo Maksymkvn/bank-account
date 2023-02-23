@@ -3,50 +3,35 @@ package com.bank.account.mapper;
 import com.bank.account.mapper.domen.Account;
 import com.bank.account.mapper.domen.dto.AccountReqDto;
 import com.bank.account.mapper.domen.dto.AccountRespDto;
-import com.bank.account.mapper.domen.dto.AccountRespDtoForBank;
-import com.bank.account.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.lang.management.OperatingSystemMXBean;
 import java.util.Optional;
-
 
 @Component
 @RequiredArgsConstructor
 public class AccountMapper {
-    private final CustomerRepository customerRepository;
+
+    private final TransactionMapper transactionMapper;
+
     public AccountRespDto accountToAccountRespDto(Account account) {
         return Optional.ofNullable(account)
-                .stream()
-                .findAny()
                 .map(a -> AccountRespDto.builder()
-                        .accountId(a.getId())
+                        .id(a.getId())
+                        .customerId(a.getCustomerId())
                         .balance(a.getBalance())
-                        .customer(a.getCustomer())
-                        .transactions(a.getTransactions())
-                        .build())
-                .orElse(null);
-    }
-    public Optional<Account> accountReqDtoToAccount(AccountReqDto accountReqDto){
-        return Optional.ofNullable(accountReqDto)
-                .stream().
-                findAny()
-                .map(a->Account.builder()
-                        .customer(customerRepository.findById(a.getCustomerId()).get())
-                        .balance(0.0)
-                        .build());
-    }
-    public Account accountRespDtoToAccount(AccountRespDto accountRespDto){
-        return Optional.ofNullable(accountRespDto)
-                .stream().
-                findAny()
-                .map(a->Account.builder()
-                        .id(a.getAccountId())
-                        .balance(a.getBalance())
-                        .customer(a.getCustomer())
-                        .transactions(a.getTransactions())
+                        .transactions(transactionMapper.transactionListToListRespDto(a.getTransactions()))
                         .build())
                 .orElse(null);
     }
 
+    public Optional<Account> accountReqDtoToAccount(AccountReqDto accountReqDto) {
+        return Optional.ofNullable(accountReqDto)
+                .map(a -> Account.builder()
+                        .customerId(a.getCustomerId())
+                        .balance(a.getAmount())
+                        .build());
+
+    }
 }

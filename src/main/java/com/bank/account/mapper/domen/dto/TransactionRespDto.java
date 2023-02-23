@@ -1,10 +1,10 @@
 package com.bank.account.mapper.domen.dto;
 
-import com.bank.account.mapper.domen.Account;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,11 +12,9 @@ import java.time.LocalDateTime;
 @Builder
 public class TransactionRespDto {
     private Long id;
-    private Long accountId;
-    private Double amount;
+    private BigDecimal amount;
     private String operationType;
     private String sourceAccount;
     private String transactionStatus;
     private LocalDateTime transactionTime;
-    private Account account;
 }

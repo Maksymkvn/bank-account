@@ -5,14 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Table(name = "customer")
 @Entity
 @Getter
 @Setter
 @Builder
-//@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {

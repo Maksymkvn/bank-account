@@ -4,10 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Builder
 public class AccountReqDto {
+
     private Long customerId;
-    private Double initialCredit;
+    private BigDecimal amount;
 }

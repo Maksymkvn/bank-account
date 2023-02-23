@@ -1,10 +1,9 @@
 package com.bank.account.mapper.domen;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -22,7 +21,7 @@ public class Transaction {
     @Column(name = "account_id")
     private Long accountId;
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
     @Column(name = "operation_type")
     private String operationType;
     @Column(name = "source_account")
