@@ -20,18 +20,18 @@ public class AccountController {
     @PostMapping("/connect")
     public ResponseEntity<? super AccountRespDto> connectAccount(@RequestBody(required = false)AccountReqDto accountReqDto){
         Optional<AccountRespDto> accountRespDto = accountService.create(accountReqDto);
- //       if (accountRespDto.isPresent()) {
-            return ResponseEntity.status(201).body(accountRespDto);
-//        }
-//        return new ResponseEntity<>("Invalid request", HttpStatus.NOT_FOUND);
+        if (!accountRespDto.isPresent()) {
+            return new ResponseEntity<>("Invalid request", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.status(201).body(accountRespDto);
     }
 
     @GetMapping("management/account/{id}")
     public ResponseEntity<? super AccountRespDto> findCustomerById(@PathVariable("id") Long id) {
         Optional<AccountRespDto> accountById = accountService.getById(id);
-        if (accountById.isPresent()) {
-            return ResponseEntity.status(200).body(accountById);
+        if (!accountById.isPresent()) {
+            return new ResponseEntity<>("not found ", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("not found ", HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(200).body(accountById);
     }
 }
