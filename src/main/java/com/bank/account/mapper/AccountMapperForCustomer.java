@@ -1,13 +1,8 @@
 package com.bank.account.mapper;
 
 import com.bank.account.mapper.domen.Account;
-import com.bank.account.mapper.domen.Customer;
 import com.bank.account.mapper.domen.dto.AccountRespDto;
-import com.bank.account.mapper.domen.dto.CustomerRespDto;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

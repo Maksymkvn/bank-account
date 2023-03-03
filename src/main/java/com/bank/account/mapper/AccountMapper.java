@@ -3,7 +3,6 @@ package com.bank.account.mapper;
 import com.bank.account.mapper.domen.Account;
 import com.bank.account.mapper.domen.dto.AccountReqDto;
 import com.bank.account.mapper.domen.dto.AccountRespDto;
-import com.bank.account.mapper.domen.dto.AccountRespDtoForBank;
 import com.bank.account.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,6 @@ public class AccountMapper {
                         .accountId(a.getId())
                         .balance(a.getBalance())
                         .customerId(a.getCustomer().getId())
-  //                      .transactions(transactionMapper.transactionalToTransactionalRespDtoForCustomer(account.getTransactions()))
                         .build())
                 .orElse(null);
     }
@@ -38,8 +36,6 @@ public class AccountMapper {
                 .map(a->Account.builder()
                         .id(a.getAccountId())
                         .balance(a.getBalance())
- //                       .customer(customerMapper.customerToRespDto(a.getCustomerRespDto()))
- //                       .transactions(a.getTransactions())
                         .build())
                 .orElse(null);
     }

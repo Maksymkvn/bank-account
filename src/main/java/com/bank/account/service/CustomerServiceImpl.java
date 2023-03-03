@@ -5,7 +5,6 @@ import com.bank.account.mapper.CustomerMapper;
 import com.bank.account.mapper.domen.dto.*;
 import com.bank.account.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,5 @@
 package com.bank.account.mapper.domen.dto;
 
-import com.bank.account.mapper.domen.Account;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

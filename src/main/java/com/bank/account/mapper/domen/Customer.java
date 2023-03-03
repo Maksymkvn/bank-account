@@ -1,11 +1,9 @@
 package com.bank.account.mapper.domen;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Table(name = "customer")
 @Entity

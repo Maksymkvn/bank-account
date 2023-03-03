@@ -1,6 +1,5 @@
 package com.bank.account.mapper;
 
-import com.bank.account.mapper.domen.Account;
 import com.bank.account.mapper.domen.Customer;
 import com.bank.account.mapper.domen.dto.CustomerReqDto;
 import com.bank.account.mapper.domen.dto.CustomerRespDto;

@@ -25,7 +25,6 @@ public class TransactionMapper {
                         .transactionStatus(t.getTransactionStatus())
                         .transactionTime(t.getTransactionTime())
                         .sourceAccount(t.getSourceAccount())
-//                        .account(t.getAccount())
                         .build())
                 .orElse(null);
     }

@@ -1,6 +1,5 @@
 package com.bank.account.mapper.domen.dto;
 
-import com.bank.account.mapper.domen.Account;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +17,4 @@ public class TransactionRespDto {
     private String sourceAccount;
     private String transactionStatus;
     private LocalDateTime transactionTime;
- //   private Account account;
 }

@@ -1,7 +1,6 @@
 package com.bank.account.controller;
 
 import com.bank.account.mapper.domen.dto.CustomerReqDto;
-import com.bank.account.mapper.domen.dto.CustomerRespDto;
 import com.bank.account.mapper.domen.dto.CustomerRespDtoForBank;
 import com.bank.account.mapper.domen.dto.CustomerRespDtoForCustController;
 import com.bank.account.service.CustomerService;

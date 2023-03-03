@@ -28,7 +28,6 @@ public class AccountServiceImpl implements AccountService {
                 .map(accountMapper::accountToAccountRespDto);
     }
 
-
     @Transactional
     public AccountRespDtoForBank create(AccountReqDto accountReqDto) {
         Optional<CustomerRespDto> customerRespDtoById = customerService.getByIdForAccount(accountReqDto.getCustomerId());
@@ -69,9 +68,13 @@ public class AccountServiceImpl implements AccountService {
                     .build();
             transactionService.create(newTransactionReqDto);
             return createAccountRespDtoForBank(updateAccountRespDto.get().getAccountId(), accountReqDto.getInitialCredit());
+        } else if (customerRespDtoById.get().getAccountRespDto() != null & accountReqDto.getInitialCredit() == 0) {
+            return createAccountRespDtoForBank(customerRespDtoById.get().getAccountRespDto().getAccountId(),
+                    accountReqDto.getInitialCredit());
         }
         return null;
     }
+
     public AccountRespDtoForBank createAccountRespDtoForBank(Long accountId, Double amount) {
         return AccountRespDtoForBank.builder()
                 .accountId(accountId)
