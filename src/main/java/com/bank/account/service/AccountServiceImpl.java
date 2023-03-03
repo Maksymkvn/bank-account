@@ -32,12 +32,12 @@ public class AccountServiceImpl implements AccountService {
     public AccountRespDtoForBank create(AccountReqDto accountReqDto) {
         Optional<CustomerRespDto> customerRespDtoById = customerService.getByIdForAccount(accountReqDto.getCustomerId());
 
-        if (customerRespDtoById.get().getAccountRespDto() == null & accountReqDto.getInitialCredit() == 0) {
+        if (customerRespDtoById.get().getAccountRespDto() == null && accountReqDto.getInitialCredit() == 0) {
             Optional<Account> account = accountMapper.accountReqDtoToAccount(accountReqDto)
                     .map(accountRepository::save);
             return createAccountRespDtoForBank(account.get().getId(), accountReqDto.getInitialCredit());
 
-        } else if (customerRespDtoById.get().getAccountRespDto() == null & accountReqDto.getInitialCredit() != 0) {
+        } else if (customerRespDtoById.get().getAccountRespDto() == null && accountReqDto.getInitialCredit() != 0) {
             Optional<AccountRespDto> accountRespDto = accountMapper.accountReqDtoToAccount(accountReqDto)
                     .map(a -> {
                         a.setBalance(accountReqDto.getInitialCredit());
@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
             return createAccountRespDtoForBank(accountRespDto.get().getAccountId(), accountReqDto.getInitialCredit());
 
 
-        } else if (customerRespDtoById.get().getAccountRespDto() != null & accountReqDto.getInitialCredit() != 0) {
+        } else if (customerRespDtoById.get().getAccountRespDto() != null && accountReqDto.getInitialCredit() != 0) {
 
             Optional<AccountRespDto> updateAccountRespDto =
                     updateBalance(customerRespDtoById.get().getAccountRespDto().getAccountId(), accountReqDto);
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
                     .build();
             transactionService.create(newTransactionReqDto);
             return createAccountRespDtoForBank(updateAccountRespDto.get().getAccountId(), accountReqDto.getInitialCredit());
-        } else if (customerRespDtoById.get().getAccountRespDto() != null & accountReqDto.getInitialCredit() == 0) {
+        } else if (customerRespDtoById.get().getAccountRespDto() != null && accountReqDto.getInitialCredit() == 0) {
             return createAccountRespDtoForBank(customerRespDtoById.get().getAccountRespDto().getAccountId(),
                     accountReqDto.getInitialCredit());
         }
