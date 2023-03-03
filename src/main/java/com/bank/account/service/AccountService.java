@@ -4,6 +4,7 @@ package com.bank.account.service;
 import com.bank.account.mapper.domen.Transaction;
 import com.bank.account.mapper.domen.dto.AccountReqDto;
 import com.bank.account.mapper.domen.dto.AccountRespDto;
+import com.bank.account.mapper.domen.dto.AccountRespDtoForBank;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public interface AccountService {
 
     Optional<AccountRespDto> getById(Long id);
 
-    Optional<AccountRespDto> create(AccountReqDto accountReqDto);
+    AccountRespDtoForBank create(AccountReqDto accountReqDto);
 
-    Optional<AccountRespDto> updateBalance(Long id, AccountReqDto accountReqDto);
-    List<Transaction> addToList(Transaction transaction);
+    public Optional<AccountRespDto> updateBalance(Long id, AccountReqDto accountReqDto);
+//    List<Transaction> addToList(Transaction transaction);
 }

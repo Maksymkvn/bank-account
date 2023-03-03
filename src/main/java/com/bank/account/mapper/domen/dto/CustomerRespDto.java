@@ -15,5 +15,5 @@ public class CustomerRespDto {
     private String lastName;
     private LocalDate dateOfBirth;
     private boolean active;
-    private Account account;
+    private AccountRespDto accountRespDto;
 }

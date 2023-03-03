@@ -22,7 +22,6 @@ public class Account {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @JsonIgnore
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Transaction> transactions;
 }

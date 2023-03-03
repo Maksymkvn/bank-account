@@ -18,8 +18,6 @@ public class TransactionMapper {
 
     public TransactionRespDto transactionalToTransactionalRespDto(Transaction transaction) {
         return Optional.ofNullable(transaction)
-                .stream()
-                .findAny()
                 .map(t -> TransactionRespDto.builder()
                         .id(t.getId())
                         .amount(t.getAmount())
@@ -27,15 +25,13 @@ public class TransactionMapper {
                         .transactionStatus(t.getTransactionStatus())
                         .transactionTime(t.getTransactionTime())
                         .sourceAccount(t.getSourceAccount())
-                        .account(t.getAccount())
+//                        .account(t.getAccount())
                         .build())
                 .orElse(null);
     }
 
     public Optional<Transaction> transactionReqDtoToTransaction(TransactionReqDto transactionalReqDto) {
         return Optional.ofNullable(transactionalReqDto)
-                .stream()
-                .findAny()
                 .map(t -> Transaction.builder()
                         .id(t.getId())
                         .amount(t.getAmount())
@@ -45,7 +41,8 @@ public class TransactionMapper {
     }
 
     public List<TransactionRespDtoCustomer> transactionalToTransactionalRespDtoForCustomer(List<Transaction> transactions) {
-        return transactions.stream().map(t -> TransactionRespDtoCustomer.builder()
+        return transactions.stream()
+                .map(t -> TransactionRespDtoCustomer.builder()
                         .id(t.getId())
                         .amount(t.getAmount())
                         .operationType(t.getOperationType())

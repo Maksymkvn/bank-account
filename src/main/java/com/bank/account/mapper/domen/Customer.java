@@ -28,7 +28,6 @@ public class Customer {
     private LocalDate dateOfBirth;
     @Column(name = "active")
     private boolean active;
-    @JsonIgnore
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Account account;
 }

@@ -16,36 +16,35 @@ import java.util.stream.StreamSupport;
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
-    @Autowired
+
     private final CustomerRepository customerRepository;
-    @Autowired
     private final CustomerMapper customerMapper;
     private final AccountMapper accountMapper;
 
     @Override
-    public List<CustomerRespDto> getAll() {
+    public List<CustomerRespDtoForCustController> getAll() {
         return StreamSupport.stream(customerRepository.findAll().spliterator(), false)
                 .toList().stream()
-                .map(customerMapper::customerToRespDto)
+                .map(customerMapper::customerToCustomerRespCustomerController)
                 .toList();
     }
 
     @Override
-    public Optional<CustomerRespDto> getById(Long id) {
+    public Optional<CustomerRespDtoForCustController> getById(Long id) {
         return customerRepository.findById(id)
-                .map(customerMapper::customerToRespDto);
+                .map(customerMapper::customerToCustomerRespCustomerController);
     }
 
     @Override
-    public Optional<CustomerRespDto> create(CustomerReqDto customerReqDto) {
+    public Optional<CustomerRespDtoForCustController> create(CustomerReqDto customerReqDto) {
         return customerMapper.customerReqDtoToCustomer(customerReqDto)
                 .map(customerRepository::save)
-                .map(customerMapper::customerToRespDto);
+                .map(customerMapper::customerToCustomerRespCustomerController);
     }
 
     @Override
     @Transactional
-    public Optional<CustomerRespDto> update(Long id, CustomerReqDto customerReqDto) {
+    public Optional<CustomerRespDtoForCustController> update(Long id, CustomerReqDto customerReqDto) {
         return customerRepository.findById(id)
                 .map(c -> {
                     if (customerReqDto != null) {
@@ -57,13 +56,13 @@ public class CustomerServiceImpl implements CustomerService {
                     }
                     return null;
                 })
-                .map(customerMapper::customerToRespDto);
+                .map(customerMapper::customerToCustomerRespCustomerController);
     }
 
     @Override
-    public Optional<CustomerRespDto> delete(Long id) {
-        Optional<CustomerRespDto> customerRespDto = customerRepository.findById(id)
-                .map(customerMapper::customerToRespDto);
+    public Optional<CustomerRespDtoForCustController> delete(Long id) {
+        Optional<CustomerRespDtoForCustController> customerRespDto = customerRepository.findById(id)
+                .map(customerMapper::customerToCustomerRespCustomerController);
         if (customerRepository.existsById(id)) {
             customerRepository.deleteById(id);
         }
@@ -91,6 +90,11 @@ public class CustomerServiceImpl implements CustomerService {
     public Optional<CustomerRespDtoForBank> getByIdBank(Long id) {
         return customerRepository.findById(id)
                 .map(customerMapper::customerToRespDtoForBank);
+    }
+
+    public Optional<CustomerRespDto> getByIdForAccount(Long id){
+        return customerRepository.findById(id)
+                .map(customerMapper::customerToRespDto);
     }
 
 }

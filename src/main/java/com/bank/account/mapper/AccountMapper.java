@@ -15,22 +15,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountMapper {
     private final CustomerRepository customerRepository;
+    private final TransactionMapper transactionMapper;
     public AccountRespDto accountToAccountRespDto(Account account) {
         return Optional.ofNullable(account)
-                .stream()
-                .findAny()
                 .map(a -> AccountRespDto.builder()
                         .accountId(a.getId())
                         .balance(a.getBalance())
-                        .customer(a.getCustomer())
-                        .transactions(a.getTransactions())
+                        .customerId(a.getCustomer().getId())
+  //                      .transactions(transactionMapper.transactionalToTransactionalRespDtoForCustomer(account.getTransactions()))
                         .build())
                 .orElse(null);
     }
     public Optional<Account> accountReqDtoToAccount(AccountReqDto accountReqDto){
         return Optional.ofNullable(accountReqDto)
-                .stream().
-                findAny()
                 .map(a->Account.builder()
                         .customer(customerRepository.findById(a.getCustomerId()).get())
                         .balance(0.0)
@@ -38,13 +35,11 @@ public class AccountMapper {
     }
     public Account accountRespDtoToAccount(AccountRespDto accountRespDto){
         return Optional.ofNullable(accountRespDto)
-                .stream().
-                findAny()
                 .map(a->Account.builder()
                         .id(a.getAccountId())
                         .balance(a.getBalance())
-                        .customer(a.getCustomer())
-                        .transactions(a.getTransactions())
+ //                       .customer(customerMapper.customerToRespDto(a.getCustomerRespDto()))
+ //                       .transactions(a.getTransactions())
                         .build())
                 .orElse(null);
     }

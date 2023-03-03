@@ -1,19 +1,15 @@
 package com.bank.account.service;
 
 import com.bank.account.mapper.AccountMapper;
-import com.bank.account.mapper.TransactionMapper;
-import com.bank.account.mapper.domen.Transaction;
+import com.bank.account.mapper.domen.Account;
 import com.bank.account.mapper.domen.dto.*;
 import com.bank.account.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +20,6 @@ public class AccountServiceImpl implements AccountService {
     private final CustomerService customerService;
     private final TransactionService transactionService;
     private final AccountMapper accountMapper;
-    private final TransactionMapper transactionMapper;
 
 
     @Override
@@ -33,15 +28,17 @@ public class AccountServiceImpl implements AccountService {
                 .map(accountMapper::accountToAccountRespDto);
     }
 
-    @Override
+
     @Transactional
-    public Optional<AccountRespDto> create(AccountReqDto accountReqDto) {
-        Optional<CustomerRespDto> customerRespDtoById = customerService.getById(accountReqDto.getCustomerId());
-        if (customerRespDtoById.get().getAccount() == null & accountReqDto.getInitialCredit() == 0) {
-            return accountMapper.accountReqDtoToAccount(accountReqDto)
-                    .map(accountRepository::save)
-                    .map(accountMapper::accountToAccountRespDto);
-        } else if (customerRespDtoById.get().getAccount() == null & accountReqDto.getInitialCredit() != 0) {
+    public AccountRespDtoForBank create(AccountReqDto accountReqDto) {
+        Optional<CustomerRespDto> customerRespDtoById = customerService.getByIdForAccount(accountReqDto.getCustomerId());
+
+        if (customerRespDtoById.get().getAccountRespDto() == null & accountReqDto.getInitialCredit() == 0) {
+            Optional<Account> account = accountMapper.accountReqDtoToAccount(accountReqDto)
+                    .map(accountRepository::save);
+            return createAccountRespDtoForBank(account.get().getId(), accountReqDto.getInitialCredit());
+
+        } else if (customerRespDtoById.get().getAccountRespDto() == null & accountReqDto.getInitialCredit() != 0) {
             Optional<AccountRespDto> accountRespDto = accountMapper.accountReqDtoToAccount(accountReqDto)
                     .map(a -> {
                         a.setBalance(accountReqDto.getInitialCredit());
@@ -49,52 +46,48 @@ public class AccountServiceImpl implements AccountService {
                     })
                     .map(accountRepository::save)
                     .map(accountMapper::accountToAccountRespDto);
+
             TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
                     .accountId(accountRespDto.get().getAccountId())
                     .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
                     .amount(accountReqDto.getInitialCredit())
                     .build();
             transactionService.create(newTransactionReqDto);
-            return accountRespDto;
-        } else if (customerRespDtoById.get().getAccount() != null & accountReqDto.getInitialCredit() != 0) {
-            Optional<AccountRespDto> updateAccountRespDto = updateBalance(customerRespDtoById.get().getAccount().getId(), accountReqDto);
+
+            return createAccountRespDtoForBank(accountRespDto.get().getAccountId(), accountReqDto.getInitialCredit());
+
+
+        } else if (customerRespDtoById.get().getAccountRespDto() != null & accountReqDto.getInitialCredit() != 0) {
+
+            Optional<AccountRespDto> updateAccountRespDto =
+                    updateBalance(customerRespDtoById.get().getAccountRespDto().getAccountId(), accountReqDto);
+
             TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
                     .accountId(updateAccountRespDto.get().getAccountId())
                     .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
                     .amount(accountReqDto.getInitialCredit())
                     .build();
             transactionService.create(newTransactionReqDto);
-            return updateAccountRespDto;
+            return createAccountRespDtoForBank(updateAccountRespDto.get().getAccountId(), accountReqDto.getInitialCredit());
         }
         return null;
     }
+    public AccountRespDtoForBank createAccountRespDtoForBank(Long accountId, Double amount) {
+        return AccountRespDtoForBank.builder()
+                .accountId(accountId)
+                .amount(amount)
+                .build();
+    }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Optional<AccountRespDto> updateBalance(Long id, AccountReqDto accountReqDto) {
-        Double accountBalance = customerService.getById(accountReqDto.getCustomerId()).get().getAccount().getBalance();
-        return accountRepository.findById(id)
+    @Transactional
+    public Optional<AccountRespDto> updateBalance(Long accountId, AccountReqDto accountReqDto) {
+        Double accountBalance = customerService.getByIdForAccount(accountReqDto.getCustomerId()).get().getAccountRespDto().getBalance();
+        return accountRepository.findById(accountId)
                 .map(c -> {
                     c.setBalance(accountReqDto.getInitialCredit() + accountBalance);
                     return c;
                 })
                 .map(accountMapper::accountToAccountRespDto);
-    }
-
-    @Transactional
-    public Optional<TransactionRespDto> createTransaction(AccountRespDto accountRespDto, Double amount) {
-        TransactionReqDto newTransactionReqDto = TransactionReqDto.builder()
-                .account(accountMapper.accountRespDtoToAccount(accountRespDto))
-                .transactionTime(LocalDateTime.now(ZoneId.systemDefault()))
-                .amount(amount)
-                .build();
-        return transactionService.create(newTransactionReqDto);
-    }
-
-
-    public List<Transaction> addToList(Transaction transaction) {
-        List<Transaction> transactionList = new ArrayList<>();
-        transactionList.add(transaction);
-        return transactionList;
     }
 }
